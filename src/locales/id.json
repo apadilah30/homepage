@@ -1,0 +1,5 @@
+{
+  "nav": { "stack": "Stack", "projects": "Proyek", "experience": "Pengalaman" },
+  "contact": { "title": "Kontak", "placeholder": "Kirim pesan dan saya akan menghubungi Anda." },
+  "footer": { "email": "halo@contoh.com", "contact": "Kontak" }
+}

@@ -88,3 +88,32 @@ NODE_ENV=production
 
 A sample `nginx.conf` is provided for reverse proxy or load-balancer setups. Adjust as needed and run Nginx in front of the Node/Next.js application.
 
+## Contact webhook & repository secrets
+
+This project can forward contact form submissions to an external webhook. To enable it, set the following secrets in your GitHub repository (or environment variables on your server):
+
+- `CONTACT_WEBHOOK`: URL to receive POST requests from the contact form (JSON payload).
+- `CONTACT_WEBHOOK_SECRET` (optional): HMAC secret used to sign the payload. When set, requests will include the header `x-hub-signature-256: sha256=<hex>`.
+
+Add secrets via the GitHub UI: Repository → `Settings` → `Secrets and variables` → `Actions` → `New repository secret`.
+
+Or using the `gh` CLI (run inside the repository):
+
+```bash
+gh secret set CONTACT_WEBHOOK --body "https://hooks.example.com/contact"
+gh secret set CONTACT_WEBHOOK_SECRET --body "$(cat ~/secrets/contact_webhook_secret)"
+```
+
+The contact endpoint is `POST /api/contact` and the payload looks like:
+
+```json
+{
+	"name": "Name",
+	"email": "name@example.com",
+	"message": "Hello",
+	"receivedAt": "2026-05-17T..."
+}
+```
+
+If `CONTACT_WEBHOOK` is not set, the server will append submissions to `contacts.log` (useful for self-hosted deployments).
+

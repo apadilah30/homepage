@@ -11,6 +11,17 @@
   --card-border: rgba(148, 163, 184, 0.12);
 }
 
+/* Light theme overrides when [data-theme="light"] is set on <html> */
+:root[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --accent-cyan: #0ea5b7;
+  --accent-violet: #7c3aed;
+  --accent-fuchsia: #d946ef;
+  --card: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(2, 6, 23, 0.06);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

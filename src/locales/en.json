@@ -1,0 +1,5 @@
+{
+  "nav": { "stack": "Stack", "projects": "Projects", "experience": "Experience" },
+  "contact": { "title": "Contact", "placeholder": "Send a message and I'll get back to you." },
+  "footer": { "email": "hello@example.com", "contact": "Contact" }
+}
