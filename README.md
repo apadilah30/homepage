@@ -34,3 +34,57 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Deployment Guide
+
+Below are several ways to deploy this application.
+
+### 1) Docker
+
+- Build the Docker image:
+
+```bash
+docker build -t portfolio-agus:latest .
+```
+
+- Run the container (default port 3000):
+
+```bash
+docker run --rm -p 3000:3000 portfolio-agus:latest
+```
+
+Note: this assumes the `Dockerfile` in the project root handles the build step and starts the app (e.g. with `npm run start`) for production.
+
+### 2) Docker Compose
+
+If you prefer `docker-compose` (a `docker-compose.yml` is included), run:
+
+```bash
+docker-compose up --build
+```
+
+Then open http://localhost:3000.
+
+### 3) Deploy to Vercel (Next.js)
+
+The easiest option for Next.js apps is Vercel. Connect your repository to Vercel or use the CLI:
+
+```bash
+npx vercel
+```
+
+Follow the prompts to select scope, project, and environment variables. Vercel will build the Next.js app automatically.
+
+### 4) Environment Configuration
+
+If the app requires production environment variables, create a `.env.production` file or set them on your hosting platform (Vercel, Docker, etc). Example:
+
+```
+NEXT_PUBLIC_API_URL=https://api.example.com
+NODE_ENV=production
+```
+
+### 5) Using Nginx (optional)
+
+A sample `nginx.conf` is provided for reverse proxy or load-balancer setups. Adjust as needed and run Nginx in front of the Node/Next.js application.
+
