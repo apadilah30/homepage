@@ -54,7 +54,9 @@ jobs:
 
       - name: Archive repo
         if: ${{ steps.deploy_check.outputs.ready == 'true' }}
-        run: tar --exclude='.git' --exclude='node_modules' --exclude='.next' --exclude='./repo.tar.gz' --warning=no-file-changed -czf repo.tar.gz .
+        run: |
+          tar --exclude='.git' --exclude='node_modules' --exclude='.next' --exclude='./repo.tar.gz' -czf repo.tar.gz .
+          RC=$?; if [ $RC -gt 1 ]; then exit $RC; fi
 
       - name: Copy archive to server
         if: ${{ steps.deploy_check.outputs.ready == 'true' }}
