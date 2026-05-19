@@ -54,7 +54,7 @@ jobs:
 
       - name: Archive repo
         if: ${{ steps.deploy_check.outputs.ready == 'true' }}
-        run: tar --exclude='.git' --exclude='node_modules' --exclude='.next' -czf repo.tar.gz .
+        run: tar --exclude='.git' --exclude='node_modules' --exclude='.next' -czf /tmp/repo.tar.gz .
 
       - name: Copy archive to server
         if: ${{ steps.deploy_check.outputs.ready == 'true' }}
@@ -64,8 +64,9 @@ jobs:
           username: ${{ env.SSH_USER }}
           key: ${{ env.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
-          source: "repo.tar.gz"
+          source: "/tmp/repo.tar.gz"
           target: ${{ env.DEPLOY_PATH }}
+          strip_components: 1
 
       - name: Run docker compose on server
         if: ${{ steps.deploy_check.outputs.ready == 'true' }}
