@@ -52,18 +52,20 @@ jobs:
             echo "Missing one or more required secrets: SSH_HOST, SSH_USER, SSH_PRIVATE_KEY, DEPLOY_PATH"
           fi
 
-      - name: Copy files to server
+      - name: Archive repo
+        if: ${{ steps.deploy_check.outputs.ready == 'true' }}
+        run: tar --exclude='.git' --exclude='node_modules' --exclude='.next' -czf repo.tar.gz .
+
+      - name: Copy archive to server
         if: ${{ steps.deploy_check.outputs.ready == 'true' }}
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ env.SSH_HOST }}
           username: ${{ env.SSH_USER }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          port: ${{ env.SSH_PORT || '22' }}
-          source: "."
+          port: ${{ secrets.SSH_PORT || 22 }}
+          source: "repo.tar.gz"
           target: ${{ env.DEPLOY_PATH }}
-          rm: false
-          exclude: ".git,node_modules,.next"
 
       - name: Run docker compose on server
         if: ${{ steps.deploy_check.outputs.ready == 'true' }}
@@ -72,10 +74,11 @@ jobs:
           host: ${{ env.SSH_HOST }}
           username: ${{ env.SSH_USER }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          port: ${{ env.SSH_PORT || '22' }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             set -e
             cd "${{ env.DEPLOY_PATH }}"
+            tar -xzf repo.tar.gz
             docker compose up -d --build
 
       - name: Skip deploy (missing secrets)
