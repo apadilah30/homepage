@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main, master ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     name: Install & Build
@@ -56,7 +59,7 @@ jobs:
           host: ${{ env.SSH_HOST }}
           username: ${{ env.SSH_USER }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          port: ${{ env.SSH_PORT }}
+          port: ${{ env.SSH_PORT || '22' }}
           source: "."
           target: ${{ env.DEPLOY_PATH }}
           rm: false
@@ -69,7 +72,7 @@ jobs:
           host: ${{ env.SSH_HOST }}
           username: ${{ env.SSH_USER }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          port: ${{ env.SSH_PORT }}
+          port: ${{ env.SSH_PORT || '22' }}
           script: |
             set -e
             cd "${{ env.DEPLOY_PATH }}"
